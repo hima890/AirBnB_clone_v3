@@ -1,0 +1,67 @@
+The setattr() function in Python is used to set the value of an attribute of an object. It takes three parameters:
+
+Object: The object whose attribute needs to be set.
+Attribute Name (as a string): The name of the attribute to be set.
+Value: The value to be assigned to the attribute.
+Here's the syntax of setattr():
+
+python
+Copy code
+setattr(object, attribute_name, value)
+For example, suppose you have a class MyClass with an attribute name, and you want to set its value:
+
+python
+Copy code
+class MyClass:
+    pass
+
+obj = MyClass()
+
+setattr(obj, 'name', 'John')
+This is equivalent to:
+
+python
+Copy code
+obj.name = 'John'
+You can use setattr() when the attribute name is determined dynamically or when you want to set attributes based on some condition or loop iteration. It provides a more flexible way to set attributes compared to direct assignment. In your context, setattr(self, key, value) is dynamically setting attributes of the BaseModel instance based on the key-value pairs in kwargs.
+
+
+
+
+The strptime() function in Python is part of the datetime module and is used to parse strings into datetime objects. It stands for "string parse time".
+
+Here's the syntax of strptime():
+
+python
+Copy code
+datetime.strptime(date_string, format)
+date_string: This is the string containing the date and time information that you want to convert to a datetime object.
+format: This is the format string specifying the format of the date_string. It tells Python how to interpret the string to extract the date and time components.
+The format string consists of various format codes that represent different components of the date and time. For example:
+
+%Y: Four-digit year (e.g., 2022).
+%m: Two-digit month (01 to 12).
+%d: Two-digit day (01 to 31).
+%H: Hour (24-hour clock) (00 to 23).
+%M: Minute (00 to 59).
+%S: Second (00 to 59).
+%f: Microsecond (000000 to 999999).
+You specify the format codes in the format string to match the corresponding parts of the date_string. For example, if your date_string is in the format "2022-01-30 08:15:30", you would use the format string "%Y-%m-%d %H:%M:%S" to parse it.
+
+Here's an example usage:
+
+python
+Copy code
+from datetime import datetime
+
+date_string = "2022-01-30 08:15:30"
+format = "%Y-%m-%d %H:%M:%S"
+
+parsed_date = datetime.strptime(date_string, format)
+print(parsed_date)
+This would output:
+
+yaml
+Copy code
+2022-01-30 08:15:30
+strptime() is useful when you have date and time information in string format and need to convert it to a datetime object for further manipulation or comparison.

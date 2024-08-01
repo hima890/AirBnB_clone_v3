@@ -1,0 +1,6 @@
+Dynamic Class Instantiation:
+globals()[className]: 
+This retrieves the class object (cls) corresponding to the class_name from the global namespace.
+
+cls(): 
+Invokes the class constructor to create a new instance (new_instance) of the class.

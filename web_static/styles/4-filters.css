@@ -1,0 +1,22 @@
+.filters {
+    color: white;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    position: relative;
+}
+
+.filters button {
+    font-size: 18px;
+    background-color:  #FF5A5F;
+    color:  #FFFFFF;
+    height: 48px;
+    width: 20%;
+    border: 0px solid white;
+    border-radius: 4px;
+    position: absolute;
+    right: 30px; /* 30px from the right border */
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+}
