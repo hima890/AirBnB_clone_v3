@@ -84,6 +84,24 @@ class DBStorage:
         )
         self.__session = scoped_session(SessionFactory)()
 
+    def get(self, cls, id):
+        """Retrieves an object from the storage database"""
+        if cls is not None and id is not None:
+            obj = self.__session.query(cls).filter(cls.id == id).first()
+            return obj
+        return None
+
+    def count(self, cls=None):
+        """Count the number of objects in storage"""
+        if cls is not None:
+            obj = self.__session.query(cls).count()
+            return obj
+        total_count = 0
+        for model in [User, Review, Place
+                      ,Amenity, City, State]:
+            total_count += self.__session.query(model).count()
+        return total_count
+
     def close(self):
         """Closes the storage engine."""
         self.__session.close()

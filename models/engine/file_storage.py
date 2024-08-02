@@ -86,3 +86,24 @@ class FileStorage:
                     self.save()
                     # Exit loop after deleting the object
                     break
+
+    def get(self, cls, id):
+        """Retrieves an object from the storage database by class and id."""
+        if cls is not None and id is not None:
+            objects = self.all(cls)
+            for obj_id, obj in objects.items():
+                if obj_id.split('.')[1] == id:
+                    return obj
+        return None
+
+    def count(self, cls=None):
+        """Count the number of objects in file storage"""
+        if cls is not None:
+            # Count objects of a specific class
+            objects = self.all(cls)
+            return len(objects)
+        else:
+            # Count all objects
+            objects = self.all()
+            # Ensure that each value in objects is a list or iterable of instances
+            return len(objects)  # Adjusted line
