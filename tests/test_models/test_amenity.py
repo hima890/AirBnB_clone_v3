@@ -10,17 +10,33 @@ import models
 import unittest
 from datetime import datetime
 from time import sleep
+from models import storage
 from models.amenity import Amenity
+from sqlalchemy.orm.attributes import InstrumentedAttribute
+
+
+stroge_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
 class TestAmenity_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the Amenity class."""
+    def setUp(self):
+        """Set up for tests."""
+        self.amenity = Amenity()
+        self.amenity.save()
 
     def test_no_args_instantiates(self):
         self.assertEqual(Amenity, type(Amenity()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(Amenity(), models.storage.all().values())
+        """Test if a new Amenity instance is stored in storage."""
+        all_objects = storage.all()
+        self.assertIn('Amenity.' + self.amenity.id, all_objects)
+        # Optionally, verify the instance's attributes
+        stored_instance = all_objects['Amenity.' + self.amenity.id]
+        self.assertEqual(self.amenity.id, stored_instance.id)
+        self.assertEqual(self.amenity.created_at, stored_instance.created_at)
+        self.assertEqual(self.amenity.updated_at, stored_instance.updated_at)
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Amenity().id))
@@ -31,9 +47,12 @@ class TestAmenity_instantiation(unittest.TestCase):
     def test_updated_at_is_public_datetime(self):
         self.assertEqual(datetime, type(Amenity().updated_at))
 
+    @unittest.skipIf(
+        stroge_type != 'db',
+        "Skipping test because storage type is DB")
     def test_name_is_public_class_attribute(self):
         am = Amenity()
-        self.assertEqual(str, type(Amenity.name))
+        self.assertEqual(InstrumentedAttribute, type(Amenity.name))
         self.assertIn("name", dir(Amenity()))
         self.assertNotIn("name", am.__dict__)
 

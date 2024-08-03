@@ -97,8 +97,7 @@ class DBStorage:
             obj = self.__session.query(cls).count()
             return obj
         total_count = 0
-        for model in [User, Review, Place
-                      ,Amenity, City, State]:
+        for model in [User, Review, Place, Amenity, City, State]:
             total_count += self.__session.query(model).count()
         return total_count
 

@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         if key not in storage.all().keys():
             print("** no instance found **")
             return None
-
+        print("Tye key from the console: " + key)
         storage.delete(key)
 
     def do_all(self, arg):

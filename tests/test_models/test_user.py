@@ -15,12 +15,16 @@ from models.user import User
 
 class TestUser_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the User class."""
+    def setUp(self):
+        """Set up for tests."""
+        self.user = User()
+        self.user.save()
 
     def test_no_args_instantiates(self):
         self.assertEqual(User, type(User()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(User(), models.storage.all().values())
+        self.assertIn(self.user, models.storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(User().id))

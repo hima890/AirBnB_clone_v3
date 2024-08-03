@@ -6,7 +6,10 @@ from models.engine.file_storage import FileStorage
 
 
 """A unique FileStorage/DBStorage instance for all models."""
-storage = DBStorage() if os.getenv(
-    'HBNB_TYPE_STORAGE'
-    ) == 'db' else FileStorage()
+stroge_type = os.getenv('HBNB_TYPE_STORAGE')
+if stroge_type == 'db':
+    storage = DBStorage()
+else:
+    storage = FileStorage()
+
 storage.reload()
