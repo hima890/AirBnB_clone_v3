@@ -15,12 +15,16 @@ from models.review import Review
 
 class TestReview_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the Review class."""
+    def setUp(self):
+        """Set up for tests."""
+        self.review = Review()
+        self.review.save()
 
     def test_no_args_instantiates(self):
         self.assertEqual(Review, type(Review()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(Review(), models.storage.all().values())
+        self.assertIn(self.review, models.storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Review().id))

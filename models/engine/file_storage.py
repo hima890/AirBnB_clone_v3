@@ -51,38 +51,48 @@ class FileStorage:
             json.dump(serialized_objs, file)
 
     def reload(self):
-        """
-        Deserializes the JSON file to __objects if the file exists.
-        If the file doesn't exist, do nothing.
-        """
+        """Deserialize the JSON file to __objects"""
         try:
-            with open(self.__file_path, 'r') as file:
-                data = json.load(file)
-                for key, obj_dict in data.items():
-                    class_name, obj_id = key.split('.')
+            with open(self.__file_path, 'r') as f:
+                objs = json.load(f)
+                for key, obj_dict in objs.items():
+                    class_name = obj_dict['__class__']
+                    if 'id' not in obj_dict:
+                        print(f"Missing 'id' key in {obj_dict}")
+                        continue
                     obj = globals()[class_name].from_dict(obj_dict)
                     self.__objects[key] = obj
         except FileNotFoundError:
             pass
+        except KeyError as e:
+            print(f"KeyError: {e} in object {obj_dict}")
 
     def delete(self, key):
         """Deletes an object from __objects using its key and updates the
         JSON file."""
-        objects = self.all()
-        if key in objects:
-            del objects[key]
-            self.save()
-
-    def delete(self, obj=None):
-        """Deletes obj from __objects if it's inside"""
-        if obj is None:
-            return
+        if key in self.__objects:  # Directly access __objects
+            print(f"Deleting {key}")
+            del self.__objects[key]  # Delete directly from __objects
+            self.save()  # Ensure this method correctly updates the JSON file
         else:
+            print(f"Key {key} not found.")
+
+    def get(self, cls, id):
+        """Retrieves an object from the storage database by class and id."""
+        if cls is not None and id is not None:
+            objects = self.all(cls)
+            for obj_id, obj in objects.items():
+                if obj_id.split('.')[1] == id:
+                    return obj
+        return None
+
+    def count(self, cls=None):
+        """Count the number of objects in file storage"""
+        if cls is not None:
+            # Count objects of a specific class
+            objects = self.all(cls)
+            return len(objects)
+        else:
+            # Count all objects
             objects = self.all()
-            # Use list to avoid RuntimeError during deletion
-            for key, value in list(objects.items()):
-                if value == obj:
-                    del objects[key]
-                    self.save()
-                    # Exit loop after deleting the object
-                    break
+            return len(objects)

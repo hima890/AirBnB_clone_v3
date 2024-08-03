@@ -5,6 +5,9 @@ class named amenity that inharits from BaseModel
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+import os
+
+stroge_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
 class Amenity(BaseModel, Base):
@@ -13,7 +16,18 @@ class Amenity(BaseModel, Base):
     Attributes:
         name (string): The name of the amenity.
     """
-    __tablename__ = 'amenities'
+    if stroge_type == 'db':
 
-    name = Column(String(128), nullable=False)
-    place_amenities = relationship("Place", secondary='place_amenity', viewonly=False, back_populates='amenities')
+        __tablename__ = 'amenities'
+
+        name = Column(String(128), nullable=False)
+        place_amenities = relationship("Place",
+                                       secondary='place_amenity',
+                                       viewonly=False,
+                                       back_populates='amenities')
+    else:
+        name = ""
+
+    def __init__(self, *args, **kwargs):
+        """initializes Amenity"""
+        super().__init__(*args, **kwargs)

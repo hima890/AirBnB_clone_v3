@@ -15,12 +15,16 @@ from models.state import State
 
 class TestState_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the State class."""
+    def setUp(self):
+        """Set up for tests."""
+        self.state = State()
+        self.state.save()
 
     def test_no_args_instantiates(self):
         self.assertEqual(State, type(State()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(State(), models.storage.all().values())
+        self.assertIn(self.state, models.storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(State().id))

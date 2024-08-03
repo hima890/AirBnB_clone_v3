@@ -15,12 +15,16 @@ from models.place import Place
 
 class TestPlace_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the Place class."""
+    def setUp(self):
+        """Set up for tests."""
+        self.place = Place()
+        self.place.save()
 
     def test_no_args_instantiates(self):
         self.assertEqual(Place, type(Place()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(Place(), models.storage.all().values())
+        self.assertIn(self.place, models.storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Place().id))

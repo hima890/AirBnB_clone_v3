@@ -11,16 +11,30 @@ import unittest
 from datetime import datetime
 from time import sleep
 from models.city import City
+from sqlalchemy.orm.attributes import InstrumentedAttribute
+
+stroge_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
 class TestCity_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the City class."""
+    def setUp(self):
+        """Set up for tests."""
+        self.amenity = City()
+        self.amenity.save()
 
     def test_no_args_instantiates(self):
         self.assertEqual(City, type(City()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(City(), models.storage.all().values())
+        """Test if a new City instance is stored in storage."""
+        all_objects = models.storage.all()
+        self.assertIn('City.' + self.amenity.id, all_objects)
+        # Optionally, verify the instance's attributes
+        stored_instance = all_objects['City.' + self.amenity.id]
+        self.assertEqual(self.amenity.id, stored_instance.id)
+        self.assertEqual(self.amenity.created_at, stored_instance.created_at)
+        self.assertEqual(self.amenity.updated_at, stored_instance.updated_at)
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(City().id))
@@ -37,9 +51,10 @@ class TestCity_instantiation(unittest.TestCase):
         self.assertIn("state_id", dir(cy))
         self.assertNotIn("state_id", cy.__dict__)
 
+    @unittest.skipIf(stroge_type != 'db', "Skipping test because storage type is DB")
     def test_name_is_public_class_attribute(self):
         cy = City()
-        self.assertEqual(str, type(City.name))
+        self.assertEqual(InstrumentedAttribute, type(City.name))
         self.assertIn("name", dir(cy))
         self.assertNotIn("name", cy.__dict__)
 

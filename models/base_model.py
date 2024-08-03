@@ -2,13 +2,22 @@
 """
 This module contains the BaseModel class.
 """
-import datetime
+from datetime import datetime
 import uuid
 import models
+import os
 from sqlalchemy import Column, String, DATETIME
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+
+stroge_type = os.getenv('HBNB_TYPE_STORAGE')
+
+if stroge_type == "db":
+    Base = declarative_base()
+else:
+    Base = object
+
+stroge_type = os.getenv('HBNB_TYPE_STORAGE')
 
 
 class BaseModel:
@@ -16,11 +25,10 @@ class BaseModel:
     This class serves as a base model for other classes.
     It provides attributes and methods common to all models.
     """
-    id = Column(String(60), nullable=False, primary_key=True, unique=True)
-    created_at = Column(DATETIME, nullable=False, default=datetime.datetime.utcnow())
-    updated_at = Column(DATETIME, nullable=False, default=datetime.datetime.utcnow())
-
-
+    if stroge_type == "db":
+        id = Column(String(60), primary_key=True)
+        created_at = Column(DATETIME, default=datetime.utcnow)
+        updated_at = Column(DATETIME, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """
@@ -34,22 +42,29 @@ class BaseModel:
         """
         if not kwargs:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
-
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         else:
             for key, value in kwargs.items():
                 if key != "__class__":
                     setattr(self, key, value)
 
             if "created_at" in kwargs.keys():
-                self.created_at = datetime.datetime.strptime(
+                self.created_at = datetime.strptime(
                     kwargs["created_at"], '%Y-%m-%dT%H:%M:%S.%f'
                 )
-            if 'updated_at' in kwargs.keys():
-                self.updated_at = datetime.datetime.strptime(
-                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f'
+            else:
+                self.created_at = datetime.now()
+
+            if "updated_at" in kwargs.keys():
+                self.updated_at = datetime.strptime(
+                    kwargs["updated_at"], '%Y-%m-%dT%H:%M:%S.%f'
                 )
+            else:
+                self.updated_at = datetime.now()
+
+            if "id" not in kwargs.keys():
+                self.id = str(uuid.uuid4())
 
     @classmethod
     def from_dict(cls, obj_dict):
@@ -71,7 +86,7 @@ class BaseModel:
         """
         Updates the 'updated_at' attribute with the current timestamp.
         """
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = datetime.now()
         # If it's a new instance, add it to the storage
         models.storage.new(self)
         models.storage.save()

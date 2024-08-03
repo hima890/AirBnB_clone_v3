@@ -15,12 +15,23 @@ from models.base_model import BaseModel
 
 class TestBaseModel_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the BaseModel class."""
+    def setUp(self):
+        """Set up for tests."""
+        self.amenity = BaseModel()
+        self.amenity.save()
 
     def test_no_args_instantiates(self):
         self.assertEqual(BaseModel, type(BaseModel()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(BaseModel(), models.storage.all().values())
+        """Test if a new BaseModel instance is stored in storage."""
+        all_objects = models.storage.all()
+        self.assertIn('BaseModel.' + self.amenity.id, all_objects)
+        # Optionally, verify the instance's attributes
+        stored_instance = all_objects['BaseModel.' + self.amenity.id]
+        self.assertEqual(self.amenity.id, stored_instance.id)
+        self.assertEqual(self.amenity.created_at, stored_instance.created_at)
+        self.assertEqual(self.amenity.updated_at, stored_instance.updated_at)
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(BaseModel().id))

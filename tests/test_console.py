@@ -70,7 +70,9 @@ class TestConsole(unittest.TestCase):
     @patch('models.storage.save')
     @patch('models.storage.new')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_create_with_parameters(self, mock_stdout, mock_storage_new, mock_storage_save):
+    def test_create_with_parameters(self, mock_stdout,
+                                    mock_storage_new,
+                                    mock_storage_save):
         """Test create command with parameters"""
         mock_storage_new.return_value = None
         mock_storage_save.return_value = None
@@ -161,7 +163,8 @@ class TestConsole(unittest.TestCase):
         self._clear_stdout()
 
     def test_update_method_BaseModel(self):
-        """Test .update("id", "attribute_name", "string_value") method for BaseModel"""
+        """Test .update("id", "attribute_name", "string_value")
+        method for BaseModel"""
         instance = BaseModel()
         instance.save()
         instance.name = "Old Name"
@@ -220,7 +223,8 @@ class TestConsole(unittest.TestCase):
         self._clear_stdout()
 
     def test_update_method_BaseModel(self):
-        """Test .update("id", "attribute_name", "string_value") method for BaseModel"""
+        """Test .update("id", "attribute_name",
+        "string_value") method for BaseModel"""
         instance = BaseModel()
         instance.save()
         instance.name = "Old Name"
@@ -234,6 +238,7 @@ class TestConsole(unittest.TestCase):
     def _clear_stdout(self):
         self.stdout.truncate(0)
         self.stdout.seek(0)
+
 
 if __name__ == "__main__":
     unittest.main()
