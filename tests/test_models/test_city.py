@@ -51,7 +51,9 @@ class TestCity_instantiation(unittest.TestCase):
         self.assertIn("state_id", dir(cy))
         self.assertNotIn("state_id", cy.__dict__)
 
-    @unittest.skipIf(stroge_type != 'db', "Skipping test because storage type is DB")
+    @unittest.skipIf(
+        stroge_type != 'db',
+        "Skipping test because storage type is DB")
     def test_name_is_public_class_attribute(self):
         cy = City()
         self.assertEqual(InstrumentedAttribute, type(City.name))
