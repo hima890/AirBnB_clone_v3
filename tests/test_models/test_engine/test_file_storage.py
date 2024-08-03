@@ -165,7 +165,7 @@ class TestFileStorage_methods(unittest.TestCase):
 
     def test_reload_no_file(self):
         storage = FileStorage()
-        storage._FileStorage__file_path = "no_file.json"  # Use a non-existent file
+        storage._FileStorage__file_path = "no_file.json"
         # Check that __objects is an empty dictionary
         self.assertIsNone(storage.reload())
 
