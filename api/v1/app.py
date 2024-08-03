@@ -2,7 +2,7 @@
 """ Flask Application """
 from models import storage
 from api.v1.views import app_views
-from flask import Flask
+from flask import Flask, jsonify
 from os import environ
 from flask_cors import CORS
 
@@ -17,6 +17,14 @@ CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 def close_db(error):
     """ Close Storage """
     storage.close()
+
+
+@app.errorhandler(404)
+def error_404(error):
+    """ Handles the 404 error page """
+    response = jsonify({"error": "Not found"})
+    response.status_code = 404
+    return response
 
 
 if __name__ == "__main__":
