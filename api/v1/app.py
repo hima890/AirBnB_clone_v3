@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-""" Flask Application """
+"""
+This module sets up the Flask application and its configurations,
+including error handling and CORS policies.
+"""
 from models import storage
 from api.v1.views import app_views
 from flask import Flask, jsonify
@@ -15,13 +18,26 @@ CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 @app.teardown_appcontext
 def close_db(error):
-    """ Close Storage """
+    """
+    Close the database connection at the end of the request or when the application shuts down.
+    
+    Parameters:
+    - error: The error that triggered the teardown, if any.
+    """
     storage.close()
 
 
 @app.errorhandler(404)
 def error_404(error):
-    """ Handles the 404 error page """
+    """
+    Custom error handler for 404 errors.
+    
+    Parameters:
+    - error: The error object provided by Flask.
+    
+    Returns:
+    A JSON response indicating that the requested resource was not found.
+    """
     response = jsonify({"error": "Not found"})
     response.status_code = 404
     return response
