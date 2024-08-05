@@ -75,15 +75,6 @@ class DBStorage:
         """Commits the session changes to database"""
         self.__session.commit()
 
-    def reload(self):
-        """Loads storage database"""
-        Base.metadata.create_all(self.__engine)
-        SessionFactory = sessionmaker(
-            bind=self.__engine,
-            expire_on_commit=False
-        )
-        self.__session = scoped_session(SessionFactory)()
-
     def get(self, cls, id):
         """Retrieves an object from the storage database"""
         if cls is not None and id is not None:
@@ -100,6 +91,14 @@ class DBStorage:
         for model in [User, Review, Place, Amenity, City, State]:
             total_count += self.__session.query(model).count()
         return total_count
+    def reload(self):
+            """Create tables and current database session"""
+            Base.metadata.create_all(self.__engine)
+
+            session_factory = sessionmaker(bind=self.__engine,
+                                        expire_on_commit=False)
+            Session = scoped_session(session_factory)
+            self.__session = Session()
 
     def close(self):
         """Closes the storage engine."""
