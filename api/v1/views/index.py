@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-""" Index view """
+"""
+Index view, t’s time to start your API!
+Your first endpoint (route) will be to return the status of your API
+"""
 from api.v1.views import app_views
 from flask import jsonify
 
@@ -7,7 +10,8 @@ from flask import jsonify
 @app_views.route(
     '/status',
     methods=['GET'],
-    strict_slashes=False)
+    strict_slashes=False
+    )
 def status():
     """ Status of API in JSON """
     return jsonify({"status": "OK"})
@@ -16,7 +20,8 @@ def status():
 @app_views.route(
     '/stats',
     methods=['GET'],
-    strict_slashes=False)
+    strict_slashes=False
+    )
 def stats():
     """ Endpoint that retrieves the number of each objects by type """
     from models import storage
