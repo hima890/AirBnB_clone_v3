@@ -47,10 +47,12 @@ def create_city(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    if not request.json:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
-    if 'name' not in request.json:
-        return make_response(jsonify({"error": "Missing name"}), 400)
+    # Try to get JSON data from the request
+    try:
+        data = request.get_json()
+    except Exception:
+        abort(400, description="Not a JSON")
+
     data = request.get_json()
     data['state_id'] = state_id
     city = City(**data)
@@ -67,9 +69,11 @@ def update_state_city(state_id):
     if not state:
         abort(404)
 
-    # Ensure the request content type is JSON
-    if not request.is_json:
-        abort(400, 'Not a JSON')
+    # Try to get JSON data from the request
+    try:
+        data = request.get_json()
+    except Exception:
+        abort(400, description="Not a JSON")
 
     # Update the State object
     data = request.get_json()
