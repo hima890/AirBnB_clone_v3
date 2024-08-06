@@ -77,10 +77,16 @@ def put_city(city_id):
     Updates a City
     """
     city = storage.get(City, city_id)
-    if not city:
+    if city is None:
         abort(404)
 
-    if not request.get_json():
+    # Ensure the request content type is JSON
+    if not request.is_json:
+        abort(400, 'Not a JSON')
+    # Try to get JSON data from the request
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
 
     ignore = ['id', 'state_id', 'created_at', 'updated_at']
