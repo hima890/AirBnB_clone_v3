@@ -65,17 +65,20 @@ class FileStorage:
         except FileNotFoundError:
             pass
         except KeyError as e:
-            print(f"KeyError: {e} in object {obj_dict}")
+            print("KeyError: {} in object {}".format(
+                e,
+                obj_dict
+            ))
 
     def delete(self, key):
         """Deletes an object from __objects using its key and updates the
         JSON file."""
         if key in self.__objects:  # Directly access __objects
-            print(f"Deleting {key}")
+            print("Deleting {}".format(key))
             del self.__objects[key]  # Delete directly from __objects
             self.save()  # Ensure this method correctly updates the JSON file
         else:
-            print(f"Key {key} not found.")
+            print("Key {} not found.".format(key))
 
     def get(self, cls, id):
         """Retrieves an object from the storage database by class and id."""
