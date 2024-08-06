@@ -64,7 +64,7 @@ class TestConsole(unittest.TestCase):
         """Test create command for User"""
         output = self._run_command("create User")
         created_id = output.strip()
-        self.assertIn(f"User.{created_id}", storage.all())
+        self.assertIn("User.{}".format(created_id), storage.all())
         self._clear_stdout()
 
     @patch('models.storage.save')
@@ -97,7 +97,7 @@ class TestConsole(unittest.TestCase):
         """Test show command for BaseModel"""
         instance = BaseModel()
         instance.save()
-        command = f"show BaseModel {instance.id}"
+        command = "show BaseModel {}".format(instance.id)
         output = self._run_command(command)
         self.assertIn(instance.id, output)
         self._clear_stdout()
@@ -106,7 +106,7 @@ class TestConsole(unittest.TestCase):
         """Test show command for User"""
         instance = User()
         instance.save()
-        command = f"show User {instance.id}"
+        command = "show User {}".format(instance.id)
         output = self._run_command(command)
         self.assertIn(instance.id, output)
         self._clear_stdout()
@@ -115,18 +115,18 @@ class TestConsole(unittest.TestCase):
         """Test destroy command for BaseModel"""
         instance = BaseModel()
         instance.save()
-        command = f"destroy BaseModel {instance.id}"
+        command = "destroy BaseModel {}".format(instance.id)
         self._run_command(command)
-        self.assertNotIn(f"BaseModel.{instance.id}", storage.all())
+        self.assertNotIn("BaseModel.{}".format(instance.id), storage.all())
         self._clear_stdout()
 
     def test_destroy_User(self):
         """Test destroy command for User"""
         instance = User()
         instance.save()
-        command = f"destroy User {instance.id}"
+        command = "destroy User {}".format(instance.id)
         self._run_command(command)
-        self.assertNotIn(f"User.{instance.id}", storage.all())
+        self.assertNotIn("User.{}".format(instance.id), storage.all())
         self._clear_stdout()
 
     def test_all(self):
@@ -156,9 +156,9 @@ class TestConsole(unittest.TestCase):
         instance.save()
         instance.name = "Old Name"
         instance.save()
-        command = f"update BaseModel {instance.id} name \"New\""
+        command = "update BaseModel {} name \"New\"".format(instance.id)
         self._run_command(command)
-        instance = storage.all()[f"BaseModel.{instance.id}"]
+        instance = storage.all()["BaseModel.{}".format(instance.id)]
         self.assertEqual(instance.name, "New")
         self._clear_stdout()
 
@@ -169,9 +169,10 @@ class TestConsole(unittest.TestCase):
         instance.save()
         instance.name = "Old Name"
         instance.save()
-        command = f'BaseModel.update("{instance.id}", "name", "New Name")'
+        command = 'BaseModel.update("{}", "name", "New Name")'.format(
+            instance.id)
         self._run_command(command)
-        instance = storage.all()[f"BaseModel.{instance.id}"]
+        instance = storage.all()["BaseModel.{}".format(instance.id)]
         self.assertEqual(instance.name, "New Name")
         self._clear_stdout()
 
@@ -208,7 +209,7 @@ class TestConsole(unittest.TestCase):
         """Test .show("id") method for BaseModel"""
         instance = BaseModel()
         instance.save()
-        command = f"BaseModel.show(\"{instance.id}\")"
+        command = "BaseModel.show(\"{}\")".format(instance.id)
         output = self._run_command(command)
         self.assertIn(instance.id, output)
         self._clear_stdout()
@@ -217,9 +218,9 @@ class TestConsole(unittest.TestCase):
         """Test .destroy("id") method for BaseModel"""
         instance = BaseModel()
         instance.save()
-        command = f"BaseModel.destroy(\"{instance.id}\")"
+        command = "BaseModel.destroy(\"{}\")".format(instance.id)
         self._run_command(command)
-        self.assertNotIn(f"BaseModel.{instance.id}", storage.all())
+        self.assertNotIn("BaseModel.{}".format(instance.id), storage.all())
         self._clear_stdout()
 
     def test_update_method_BaseModel(self):
@@ -229,9 +230,9 @@ class TestConsole(unittest.TestCase):
         instance.save()
         instance.name = "Old Name"
         instance.save()
-        command = f'BaseModel.update("{instance.id}", "name", "New")'
+        command = 'BaseModel.update("{}", "name", "New")'.format(instance.id)
         self._run_command(command)
-        instance = storage.all()[f"BaseModel.{instance.id}"]
+        instance = storage.all()["BaseModel.{}".format(instance.id)]
         self.assertEqual(instance.name, "Old Name")
         self._clear_stdout()
 
