@@ -75,6 +75,7 @@ def post_city(state_id):
     data = request.get_json()
     instance = City(**data)
     instance.state_id = state.id
+    storage.new(instance)
     instance.save()
     return make_response(jsonify(instance.to_dict()), 201)
 
