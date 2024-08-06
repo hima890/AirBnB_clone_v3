@@ -310,7 +310,7 @@ class HBNBCommand(cmd.Cmd):
                         self.do_update_cmd(
                             class_name, instance_id, update_data)
                 else:
-                    print(f"** Unknown command: {command} **")
+                    print("** Unknown command: {} **".format(command))
             else:
                 print("** class doesn't exist **")
         else:
