@@ -75,6 +75,10 @@ def update_state_city(state_id):
     except Exception:
         abort(400, description="Not a JSON")
 
+    # Check if 'name' is in the JSON data
+    if 'name' not in data:
+        abort(400, description="Missing name")
+
     # Update the State object
     data = request.get_json()
     for key, value in data.items():

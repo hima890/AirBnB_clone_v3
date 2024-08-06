@@ -48,6 +48,10 @@ def create_state():
     except Exception:
         abort(400, description="Not a JSON")
 
+    # Check if 'name' is in the JSON data
+    if 'name' not in data:
+        abort(400, description="Missing name")
+
     state = State(**request.get_json())
     state.save()
     return jsonify(state.to_dict()), 201
