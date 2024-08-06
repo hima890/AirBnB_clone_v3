@@ -300,7 +300,10 @@ class HBNBCommand(cmd.Cmd):
                         attribute_value = params[2].strip('"')
                         self.do_update_cmd(
                             class_name, instance_id,
-                            f"{attribute_name} {attribute_value}")
+                            "{} {}".format(
+                            attribute_name,
+                            attribute_value    
+                            ))
                     elif len(params) == 2:
                         instance_id = params[0].strip('"')
                         update_data = params[1]
