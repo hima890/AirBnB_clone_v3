@@ -18,11 +18,11 @@ def downtear(self):
 
 
 @app.errorhandler(404)
-def page_not_found(error):
-    '''Handles 404 errors'''
-    response = jsonify({"error": "Not found"})
-    response.status_code = 404
-    return response
+def not_found(error):
+    """ Handler for 404 errors that returns a JSON-formatted response """
+    return jsonify({
+        "error": "Not found"
+        }), 404
 
 
 if __name__ == "__main__":
