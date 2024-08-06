@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Flask routes file logic"""
-from flask import jsonify, request
+from flask import jsonify
 from api.v1.views import app_views
 from models import storage
 from models.amenity import Amenity
@@ -14,10 +14,9 @@ from models.user import User
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     '''Returns the status of the API'''
-    if request.method == 'GET':
-        return jsonify({
-            "status": "OK"
-            })
+    return jsonify({
+        "status": "OK"
+        })
 
 
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
