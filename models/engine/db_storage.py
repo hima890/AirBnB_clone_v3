@@ -86,7 +86,7 @@ class DBStorage:
         """Count the number of objects in storage matching the given class"""
         if cls:
             return self.__session.query(cls).count()
-    
+
         total_count = 0
         for class_type in self.classes.values():
             total_count += self.__session.query(class_type).count()
