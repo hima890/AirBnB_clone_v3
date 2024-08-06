@@ -62,8 +62,11 @@ def post_user():
         abort(400, description="Not a JSON")
 
     # Check if 'name' is in the JSON data
-    if 'name' not in data:
-        abort(400, description="Missing name")
+    if 'first_name' not in data:
+        abort(400, description="Missing first name")
+
+    if 'last_name' not in data:
+        abort(400, description="Missing last name")
 
     if 'email' not in data:
         abort(400, description="Missing email")
