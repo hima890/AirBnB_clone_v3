@@ -57,7 +57,7 @@ class TestConsole(unittest.TestCase):
         """Test create command for BaseModel"""
         output = self._run_command("create BaseModel")
         created_id = output.strip()
-        self.assertIn(f"BaseModel.{created_id}", storage.all())
+        self.assertIn("BaseModel.{}".format(created_id), storage.all())
         self._clear_stdout()
 
     def test_create_User(self):
