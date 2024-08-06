@@ -5,7 +5,9 @@ import json
 import requests
 
 if __name__ == "__main__":
-    """ POST /api/v1/states
+    city_id = "nop"
+
+    """ PUT /api/v1/cities/<city_id>
     """
-    r = requests.post("http://0.0.0.0:5050/api/v1/states/", data={ 'name': "NewState" }, headers={ 'Content-Type': "application/x-www-form-urlencoded" })
+    r = requests.put("http://0.0.0.0:5050/api/v1/cities/{}".format(city_id), data=json.dumps({ 'name': "NewName" }), headers={ 'Content-Type': "application/json" })
     print(r.status_code)
