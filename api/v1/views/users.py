@@ -65,9 +65,9 @@ def post_user():
     if 'name' not in data:
         abort(400, description="Missing name")
 
-    if 'email' not in request.get_json():
+    if 'email' not in data:
         abort(400, description="Missing email")
-    if 'password' not in request.get_json():
+    if 'password' not in data:
         abort(400, description="Missing password")
 
     data = request.get_json()
@@ -81,7 +81,7 @@ def put_user(user_id):
     """
     Updates a user
     """
-    user = storage.get(put_user, user_id)
+    user = storage.get(User, user_id)
     if user is None:
         abort(404)
 
