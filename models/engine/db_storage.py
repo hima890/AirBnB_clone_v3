@@ -91,14 +91,17 @@ class DBStorage:
         for model in [User, Review, Place, Amenity, City, State]:
             total_count += self.__session.query(model).count()
         return total_count
-    def reload(self):
-            """Create tables and current database session"""
-            Base.metadata.create_all(self.__engine)
 
-            session_factory = sessionmaker(bind=self.__engine,
-                                        expire_on_commit=False)
-            Session = scoped_session(session_factory)
-            self.__session = Session()
+    def reload(self):
+        """Create tables and current database session"""
+        Base.metadata.create_all(self.__engine)
+
+        session_factory = sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False
+            )
+        Session = scoped_session(session_factory)
+        self.__session = Session()
 
     def close(self):
         """Closes the storage engine."""

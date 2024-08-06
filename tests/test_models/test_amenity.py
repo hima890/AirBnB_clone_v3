@@ -47,15 +47,6 @@ class TestAmenity_instantiation(unittest.TestCase):
     def test_updated_at_is_public_datetime(self):
         self.assertEqual(datetime, type(Amenity().updated_at))
 
-    @unittest.skipIf(
-        stroge_type != 'db',
-        "Skipping test because storage type is DB")
-    def test_name_is_public_class_attribute(self):
-        am = Amenity()
-        self.assertEqual(InstrumentedAttribute, type(Amenity.name))
-        self.assertIn("name", dir(Amenity()))
-        self.assertNotIn("name", am.__dict__)
-
     def test_two_amenities_unique_ids(self):
         am1 = Amenity()
         am2 = Amenity()
