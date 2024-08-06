@@ -1,50 +1,13 @@
 #!/usr/bin/python3
-"""
-Index view, t’s time to start your API!
-Your first endpoint (route) will be to return the status of your API
-"""
-from api.v1.views import app_views
+# api/v1/views/index.py
+
 from flask import jsonify
+from api.v1.views import app_views
 
 
-@app_views.route(
-    '/status',
-    methods=['GET'],
-    strict_slashes=False
-    )
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
-    """ Status of API in JSON """
-    return jsonify({"status": "OK"})
-
-
-@app_views.route(
-    '/stats',
-    methods=['GET'],
-    strict_slashes=False
-    )
-def stats():
-    """ Endpoint that retrieves the number of each objects by type """
-    from models import storage
-    from models.state import State
-    from models.city import City
-    from models.user import User
-    from models.place import Place
-    from models.amenity import Amenity
-    from models.review import Review
-    from models.state import State
-
-    amenities = storage.count(Amenity)
-    cities = storage.count(City)
-    places = storage.count(Place)
-    reviews = storage.count(Review)
-    states = storage.count(State)
-    users = storage.count(User)
-
-    return jsonify(
-        {
-            "amenities": amenities,
-            "cities": cities,
-            "places": places,
-            "reviews": reviews,
-            "states": states,
-            "users": users})
+    '''Returns the status of the API'''
+    return jsonify({
+        "status": "OK"
+        })

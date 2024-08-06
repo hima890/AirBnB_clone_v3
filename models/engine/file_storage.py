@@ -99,3 +99,7 @@ class FileStorage:
             # Count all objects
             objects = self.all()
             return len(objects)
+
+    def close(self):
+        """Close method for deserializing the JSON file to objects"""
+        self.reload()
