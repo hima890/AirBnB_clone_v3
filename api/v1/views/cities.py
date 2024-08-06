@@ -67,20 +67,14 @@ def update_state_city(state_id):
     if not state:
         abort(404)
 
-    # Check the content type and process accordingly
-    if request.content_type == 'application/json':
-        if not request.is_json:
-            abort(400, description="Not a JSON")
-        data = request.get_json()
-    elif request.content_type == 'application/x-www-form-urlencoded':
-        data = request.form.to_dict()
-    else:
-        abort(415, description="Unsupported Media Type")
+    # Ensure the request content type is JSON
+    if not request.is_json:
+        abort(400, 'Not a JSON')
 
     # Update the State object
+    data = request.get_json()
     for key, value in data.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(state, key, value)
     state.save()
     return jsonify(state.to_dict()), 200
-
