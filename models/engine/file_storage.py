@@ -58,7 +58,7 @@ class FileStorage:
                 for key, obj_dict in objs.items():
                     class_name = obj_dict['__class__']
                     if 'id' not in obj_dict:
-                        print(f"Missing 'id' key in {obj_dict}")
+                        print("Missing 'id' key in {}".format(obj_dict))
                         continue
                     obj = globals()[class_name].from_dict(obj_dict)
                     self.__objects[key] = obj
