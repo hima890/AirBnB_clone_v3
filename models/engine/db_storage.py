@@ -83,13 +83,13 @@ class DBStorage:
         return None
 
     def count(self, cls=None):
-        """Count the number of objects in storage"""
-        if cls is not None:
-            obj = self.__session.query(cls).count()
-            return obj
+        """Count the number of objects in storage matching the given class"""
+        if cls:
+            return self.__session.query(cls).count()
+    
         total_count = 0
-        for model in [User, Review, Place, Amenity, City, State]:
-            total_count += self.__session.query(model).count()
+        for class_type in self.classes.values():
+            total_count += self.__session.query(class_type).count()
         return total_count
 
     def reload(self):
