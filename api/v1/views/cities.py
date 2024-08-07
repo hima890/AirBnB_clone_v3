@@ -59,14 +59,23 @@ def post_city(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    if not request.get_json():
+    # Ensure the request content type is JSON
+    if not request.is_json:
+        abort(400, 'Not a JSON')
+    # Try to get JSON data from the request
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
-    if 'name' not in request.get_json():
+
+    # Check if 'name' is in the JSON data
+    if 'name' not in data:
         abort(400, description="Missing name")
 
     data = request.get_json()
     instance = City(**data)
     instance.state_id = state.id
+    storage.new(instance)
     instance.save()
     return make_response(jsonify(instance.to_dict()), 201)
 
